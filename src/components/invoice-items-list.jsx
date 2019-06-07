@@ -14,7 +14,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const classes = makeStyles(theme => ({
   root: {
-    width: '100%',
     marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
@@ -24,7 +23,7 @@ const classes = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 10,
+    width: 3,
   },
 }));
 const moneyFormat = num => `$${num.toFixed(2)}`;

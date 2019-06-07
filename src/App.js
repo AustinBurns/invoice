@@ -23,14 +23,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function App() {
-  const { invoice, invoiceDispatch, open, setGrowlOpen } = useAppContext();
+  const { invoice, invoiceDispatch, invoiceSaveSuccess, setInvoiceSaveSuccess } = useAppContext();
   const hideComponent = !invoice.lineItems.length;
-  const callSaveInvoice = async showGrowl => {
+  const callSaveInvoice = async () => {
     const result = await saveInvoice(invoice);
 
     if (result) {
       invoiceDispatch({ type: 'RESET_INVOICE', payload: initialInvoice });
-      setGrowlOpen(true);
+      setInvoiceSaveSuccess(true);
     }
   };
   const classes = useStyles();
@@ -66,12 +66,12 @@ function App() {
               <MemoField memo={invoice.memo} dispatch={invoiceDispatch} />
             </Grid>
             <Grid hidden={hideComponent} item xs={12}>
-              <SaveButton saveInvoice={callSaveInvoice} />
+              <SaveButton invoiceSaveSuccess={invoiceSaveSuccess} saveInvoice={callSaveInvoice} />
             </Grid>
           </Paper>
         </Grid>
       </Grid>
-      <Growl open={open} setGrowlOpen={setGrowlOpen} />
+      <Growl invoiceSaveSuccess={invoiceSaveSuccess} />
     </Container>
   );
 }

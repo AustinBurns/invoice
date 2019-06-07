@@ -21,9 +21,9 @@ function useAppContext() {
 
 function AppProvider(props) {
   const [invoice, invoiceDispatch] = useReducer(invoiceReducer, initialInvoice);
-  const [open, setGrowlOpen] = useState(false);
+  const [invoiceSaveSuccess, setInvoiceSaveSuccess] = useState(false);
 
-  const context = { invoice, invoiceDispatch, open, setGrowlOpen };
+  const context = { invoice, invoiceDispatch, invoiceSaveSuccess, setInvoiceSaveSuccess };
 
   return <AppContext.Provider value={context} {...props} />;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar, SnackbarContent, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -23,22 +23,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Growl = ({ open, setGrowlOpen }) => {
+export const Growl = ({ invoiceSaveSuccess }) => {
   const classes = useStyles();
+  const [show, setShow] = useState(false);
 
-  function handleClose(event, reason) {
+  function handleClose(_, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
-    setGrowlOpen(false);
+    setShow(false);
   }
+
+  useEffect(() => {
+    setShow(invoiceSaveSuccess);
+  }, [invoiceSaveSuccess]);
 
   return (
     <div>
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={open}
+        open={show}
         autoHideDuration={6000}
         onClose={handleClose}
       >

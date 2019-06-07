@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
-import { List, ListItem, Button, ListItemText, makeStyles } from '@material-ui/core';
+import { List, ListItem, Button, ListItemText, makeStyles, CircularProgress } from '@material-ui/core';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   selectedCustomer: {
     fontWeight: 'bolder',
   },
+  loading: {
+    color: '#43464B',
+  },
 }));
 const initialCustomers = { all: [], filtered: [], current: [], page: 1, limit: 5, query: '' };
 
@@ -34,7 +37,9 @@ export const CustomersList = ({ selectedCustomer, dispatch }) => {
     setUpCustomers();
   }, []);
 
-  return (
+  return !customers.filtered.length ? (
+    <CircularProgress className={classes.loading} />
+  ) : (
     <div className={classes.root}>
       <List component="nav" aria-label="Line Item List">
         <ListItem>
