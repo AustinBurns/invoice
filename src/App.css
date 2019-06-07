@@ -1,0 +1,13 @@
+.app-header .saved {
+  color: #008000;
+}
+
+.app-body .items {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.app-body .total {
+  display: inline-block;
+  vertical-align: top;
+}
