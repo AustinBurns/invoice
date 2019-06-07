@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Paper,
@@ -29,6 +29,24 @@ const moneyFormat = num => `$${num.toFixed(2)}`;
 
 export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) => {
   const classes = useStyles();
+  // Allow the user to be able to completely remove the quantity, giving them the
+  // capability to enter a new quantity. However, capture the previous quantity first
+  // so that if the user leaves the quantity input without entering a new quantity,
+  // the previous quantity will then be used.
+  const [previousQuantity, setPreviousQuantity] = useState(null);
+  const handleOnChange = (event, lineItem) => {
+    if (!event.target.value) {
+      setPreviousQuantity(lineItem.quantity);
+    }
+
+    dispatch({ type: 'MODIFY_QUANTITY', payload: { id: lineItem.id, quantity: event.target.value } });
+  };
+  const checkForInvalidQuantity = (event, lineItem) => {
+    if (!event.target.value) {
+      dispatch({ type: 'MODIFY_QUANTITY', payload: { id: lineItem.id, quantity: previousQuantity } });
+      setPreviousQuantity(null);
+    }
+  };
 
   return (
     <>
@@ -52,14 +70,10 @@ export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) 
                     id="item-quantity"
                     className={classes.textField}
                     value={lineItem.quantity}
-                    onChange={event =>
-                      dispatch({
-                        type: 'MODIFY_QUANTITY',
-                        payload: { id: lineItem.id, quantity: event.target.value },
-                      })
-                    }
                     type="number"
                     inputProps={{ 'aria-label': 'Quantity' }}
+                    onChange={event => handleOnChange(event, lineItem)}
+                    onBlur={event => checkForInvalidQuantity(event, lineItem)}
                   />
                   <IconButton
                     onClick={() => dispatch({ type: 'REMOVE_ITEM', payload: { id: lineItem.id } })}
@@ -70,7 +84,9 @@ export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) 
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">{moneyFormat(lineItem.price)}</TableCell>
-                <TableCell align="right">{moneyFormat(lineItem.price * lineItem.quantity)}</TableCell>
+                <TableCell align="right">
+                  {moneyFormat(lineItem.price * (lineItem.quantity || previousQuantity))}
+                </TableCell>
               </TableRow>
             ))}
             <TableRow>

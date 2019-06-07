@@ -31,13 +31,20 @@ export const invoiceReducer = (state, action) => {
     case 'MODIFY_QUANTITY': {
       // If the quantity is anything less than 1, don't allow the quantity to be
       // updated
-      if (payload.quantity < 1) {
+      if (payload.quantity && payload.quantity < 1) {
         return state;
       }
 
       const items = state.lineItems.map(item =>
         item.id === payload.id ? { ...item, quantity: payload.quantity } : item
       );
+
+      // Allow the user to temporarily remove the quantity so that they can enter
+      // a completely new quantity but do not update the total yet since the quantity
+      // is technically "invalid"
+      if (!payload.quantity) {
+        return { ...state, lineItems: items };
+      }
 
       return { ...state, lineItems: items, ...updateTotals(items, state.tax) };
     }
