@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { TextField } from '@material-ui/core';
 
 export const MemoField = ({ memo, dispatch }) => {
+  // Keep track of all changes to the value locally, and only update the value
+  // of the memo on the invoice when the user has finished typing and left the input
   const [localMemo, setLocalMemo] = useState(memo);
   const updateMemo = () => {
     if (memo !== localMemo) {
@@ -9,6 +11,7 @@ export const MemoField = ({ memo, dispatch }) => {
     }
   };
 
+  // If the memo that's passed is falsy, turn the local memo state to an empty string
   useEffect(() => {
     if (!memo) {
       setLocalMemo('');

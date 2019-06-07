@@ -24,11 +24,18 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const { invoice, invoiceDispatch, invoiceSaveSuccess, setInvoiceSaveSuccess } = useAppContext();
+  // Hide the invoice, memo, and save button components until an item has been
+  // added to the invoice
   const hideComponent = !invoice.lineItems.length;
+  // Create an async function to pass down to the save button to be able kick off
+  // the save invoice API call when the save button is clicked
   const callSaveInvoice = async () => {
-    const result = await saveInvoice(invoice);
+    const saveSuccess = await saveInvoice(invoice);
 
-    if (result) {
+    // If the invoice was saved successfully (the function call returns true),
+    // then reset the invoice state and set the invoice success state to true
+    // to stop the loading icon on the save button and show a success growl
+    if (saveSuccess) {
       invoiceDispatch({ type: 'RESET_INVOICE', payload: initialInvoice });
       setInvoiceSaveSuccess(true);
     }

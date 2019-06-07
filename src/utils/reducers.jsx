@@ -6,13 +6,18 @@ export const invoiceReducer = (state, action) => {
   switch (type) {
     case 'ADD_ITEM': {
       let items = state.lineItems;
-
+      // Check to see if we have already added the item to the invoice, and if so,
+      // return the index of that item to update the quantity for that item instead
+      // of adding that item to the invoice again
       const itemIndex = items.findIndex(item => item.id === payload.item.id);
 
       if (itemIndex !== -1) {
+        // If the item is in the invoice already, update the quantity instead of
+        // adding it again
         items = [...items];
         items[itemIndex].quantity++;
       } else {
+        // Otherwise add the new item tot he invoice
         items = items.concat({ ...payload.item, quantity: 1 });
       }
 
@@ -24,6 +29,12 @@ export const invoiceReducer = (state, action) => {
       return { ...state, lineItems: items, ...updateTotals(items, state.tax) };
     }
     case 'MODIFY_QUANTITY': {
+      // If the quantity is anything less than 1, don't allow the quantity to be
+      // updated
+      if (payload.quantity < 1) {
+        return state;
+      }
+
       const items = state.lineItems.map(item =>
         item.id === payload.id ? { ...item, quantity: payload.quantity } : item
       );
@@ -32,7 +43,7 @@ export const invoiceReducer = (state, action) => {
     }
     case 'UPDATE_MEMO':
       return { ...state, memo: payload.memo };
-    case 'ADD_CUSTOMER':
+    case 'SELECT_CUSTOMER':
       return { ...state, customer: payload.customer };
     case 'RESET_INVOICE':
       return { ...payload };
@@ -67,7 +78,7 @@ export const customersReducer = (state, action) => {
   switch (type) {
     case 'SET_CUSTOMERS': {
       // Subtract 1 from the page number since we are starting our page numbers
-      // at 1 instead of 0
+      // at 1 (to make pagination buttons easier to handle) instead of 0
       const offset = (state.page - 1) * state.limit;
 
       return {
@@ -79,7 +90,7 @@ export const customersReducer = (state, action) => {
     }
     case 'CHANGE_CUSTOMERS': {
       // Subtract 1 from the page number since we are starting our page numbers
-      // at 1 instead of 0
+      // at 1 (to make pagination buttons easier to handle) instead of 0
       const offset = (payload.page - 1) * state.limit;
 
       return { ...state, current: state.filtered.slice(offset, offset + state.limit), page: payload.page };

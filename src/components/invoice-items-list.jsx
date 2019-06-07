@@ -12,23 +12,24 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const classes = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
-  button: {
-    marginLeft: theme.spacing(3),
-  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 3,
+    marginTop: theme.spacing(1),
+    width: '70%',
   },
 }));
+// Only show two decimal places when displaying money
 const moneyFormat = num => `$${num.toFixed(2)}`;
 
 export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) => {
+  const classes = useStyles();
+
   return (
     <>
       <h2>Invoice:</h2>
@@ -37,7 +38,7 @@ export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) 
           <TableHead>
             <TableRow>
               <TableCell>Item</TableCell>
-              <TableCell>Qty.</TableCell>
+              <TableCell>Quantity</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Total</TableCell>
             </TableRow>
@@ -48,7 +49,7 @@ export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) 
                 <TableCell>{lineItem.item}</TableCell>
                 <TableCell align="right">
                   <TextField
-                    id="filled-name"
+                    id="item-quantity"
                     className={classes.textField}
                     value={lineItem.quantity}
                     onChange={event =>
@@ -58,7 +59,6 @@ export const InvoiceItemsList = ({ lineItems, subtotal, tax, total, dispatch }) 
                       })
                     }
                     type="number"
-                    margin="normal"
                     inputProps={{ 'aria-label': 'Quantity' }}
                   />
                   <IconButton

@@ -30,6 +30,7 @@ export const CustomersList = ({ selectedCustomer, dispatch }) => {
   const classes = useStyles();
   const [customers, customersDispatch] = useReducer(customersReducer, initialCustomers);
   const selectedCustomerText = selectedCustomer ? `${selectedCustomer.firstname} ${selectedCustomer.lastname}` : `None`;
+  // Async function to go fetch customers and set the customers on the state via an action once the async call comes back
   const setUpCustomers = async () =>
     customersDispatch({ type: 'SET_CUSTOMERS', payload: { customers: (await getCustomers()).data.data } });
 
@@ -60,13 +61,16 @@ export const CustomersList = ({ selectedCustomer, dispatch }) => {
               selected={selectedCustomer && customer.id === selectedCustomer.id}
               button
               key={index}
-              onClick={() => dispatch({ type: 'ADD_CUSTOMER', payload: { customer } })}
+              onClick={() => dispatch({ type: 'SELECT_CUSTOMER', payload: { customer } })}
             >
               <ListItemText primary={`${customer.firstname} ${customer.lastname}`} />
             </ListItem>
           );
         })}
       </List>
+      {/* 
+        Very simple pagination to be able to paginate the customers in order to make the list more managable 
+      */}
       <Button
         variant="contained"
         color="default"

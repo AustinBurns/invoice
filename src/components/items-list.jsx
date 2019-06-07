@@ -16,6 +16,7 @@ const initialItems = { all: [], filtered: [], query: '' };
 export const ItemsList = ({ dispatch }) => {
   const classes = useStyles();
   const [items, itemsDispatch] = useReducer(itemsReducer, initialItems);
+  // Async function to go fetch items and set the items on the state via an action once the async call comes back=
   const setUpItems = async () => itemsDispatch({ type: 'SET_ITEMS', payload: { items: (await getItems()).data.data } });
 
   useEffect(() => {

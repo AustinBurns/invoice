@@ -35,6 +35,7 @@ export const Growl = ({ invoiceSaveSuccess }) => {
     setShow(false);
   }
 
+  // If the invoice has been successfully saved, show the success growl
   useEffect(() => {
     setShow(invoiceSaveSuccess);
   }, [invoiceSaveSuccess]);

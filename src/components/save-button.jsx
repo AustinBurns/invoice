@@ -31,12 +31,19 @@ export const SaveButton = ({ invoiceSaveSuccess, saveInvoice }) => {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
 
+  // If the invoice was saved successfully, don't show the loading icon on the
+  // submit button anymore
   useEffect(() => {
     setLoading(false);
   }, [invoiceSaveSuccess]);
 
   return (
     <div className={classes.wrapper}>
+      {/*
+        When the button is clicked, show the loading icon on the button and 
+        call the saveInvoice function that was passed in by the parent to 
+        kick off the API call to save the invoice created
+      */}
       <Button
         variant="contained"
         className={classes.button}
