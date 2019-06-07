@@ -17,6 +17,53 @@ for an interview technical assessment.
 
 Run `npm install` (or `yarn install`) to install all dependencies needed for the project.
 
+## Functionality
+
+### Customers
+
+- Can search for customers via the search input
+- `Clear Search` button clears out any current search
+- `Prev` and `Next` buttons allow for very simple customer page navigation
+- When a customer is chosen, their name is show as the `Currently Selected Customer`
+  and they are also highlighted in the list
+- In order to always have a customer for an invoice, a customer must be chosen
+  before in order to proceed with creating an invoice
+
+### Items
+
+- Can search for items via the search input
+- `Clear Search` button clears out any current search
+- When an item is chosen, it automatically gets added to the `Invoice` section that
+  is created below (the invoice section only shows up if at least one item has
+  been added to the invoice)
+- If an item has already been added to an invoice, choosing that item again
+  will then add to the quantity of the line item that was created in the invoice
+  for the chosen item instead of adding a new line item. There is no limit to how many times
+  a line item can be added to the invoice
+
+### Invoice
+
+- Quantity can be changed to any number except for 0
+- When the quanity for a line item is changed, all of the totals immediately update
+- A line item can also be removed from the invoice with the trash can button
+
+### Memo
+
+- A memo can optionally be added to the invoice by typing text in the memo text
+  area
+
+### Save Button
+
+- When the save button is clicked, it is disabled and a loading icon is shown
+  while the API call is being made to save the invoice
+- Once the save is successful:
+  - The save button is re-enabled and the loading icon
+    goes away
+  - A success growl is shown to the user to indicate their invoice
+    was saved successfully
+  - The invoice form state is returned to it's initial state to allow for a
+    new invoice to be created
+
 ## Built With
 
 - [React](https://reactjs.org/) - The frontend framework used
