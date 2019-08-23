@@ -66,10 +66,11 @@ export const itemsReducer = (state, action) => {
     case 'SET_ITEMS':
       return { ...state, all: payload.items, filtered: payload.items };
     case 'FILTER_ITEMS':
+        const query  = payload.query.toLowerCase();
       // VERY simple item filtering by searching the item name only
       return {
         ...state,
-        filtered: state.all.filter(item => item.item.toLowerCase().startsWith(payload.query)),
+        filtered: state.all.filter(item => item.item.toLowerCase().startsWith(query)),
         query: payload.query,
       };
     case 'CLEAR_FILTER':
@@ -103,8 +104,9 @@ export const customersReducer = (state, action) => {
       return { ...state, current: state.filtered.slice(offset, offset + state.limit), page: payload.page };
     }
     case 'FILTER_CUSTOMERS': {
+      const query  = payload.query.toLowerCase();
       // VERY simple customer filtering by searching the customer first name only
-      const filtered = state.all.filter(customer => customer.firstname.toLowerCase().startsWith(payload.query));
+      const filtered = state.all.filter(customer => customer.firstname.toLowerCase().startsWith(query));
 
       return { ...state, filtered, current: filtered.slice(0, state.limit), page: 1, query: payload.query };
     }

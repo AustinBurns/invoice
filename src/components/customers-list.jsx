@@ -38,7 +38,7 @@ export const CustomersList = ({ selectedCustomer, dispatch }) => {
     setUpCustomers();
   }, []);
 
-  return !customers.filtered.length ? (
+  return !customers.all.length && !customers.filtered.length ? (
     <CircularProgress className={classes.loading} />
   ) : (
     <div className={classes.root}>
@@ -55,7 +55,11 @@ export const CustomersList = ({ selectedCustomer, dispatch }) => {
           <span>Currently Selected Customer:</span>
           <span style={{ paddingLeft: '0.5rem', fontWeight: 'bold' }}>{selectedCustomerText}</span>
         </ListItem>
-        {customers.current.map((customer, index) => {
+        {!customers.filtered.length ? (
+          <ListItem>
+            <span>No customers match that search! Please search again.</span>
+          </ListItem>
+        ) : customers.current.map((customer, index) => {
           return (
             <ListItem
               selected={selectedCustomer && customer.id === selectedCustomer.id}

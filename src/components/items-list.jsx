@@ -34,7 +34,11 @@ export const ItemsList = ({ dispatch }) => {
             Choosing an item multiple times will increase the quanity for that item.
           </div>
         </ListItem>
-        {items.filtered.map((item, index) => {
+        {!items.filtered.length ? (
+          <ListItem>
+            <span>No items match that search! Please search again.</span>
+          </ListItem>
+        ) : items.filtered.map((item, index) => {
           return (
             <ListItem button key={index} onClick={() => dispatch({ type: 'ADD_ITEM', payload: { item } })}>
               <ListItemText primary={item.item} />
